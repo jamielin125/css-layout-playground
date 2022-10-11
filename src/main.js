@@ -11,6 +11,7 @@ import LayoutList from './components/layout/LayoutList';
 import LayoutListInline from './components/layout/LayoutListInline';
 
 import 'vue-layout-system/dist/vue-layout-system.css';
+import router from "@/router";
 
 Vue.config.productionTip = false
 
@@ -26,4 +27,5 @@ new Vue({
     LayoutList,
     LayoutListInline,
   },
+  router,
 }).$mount('#app')
