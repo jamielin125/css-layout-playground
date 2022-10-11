@@ -3,8 +3,13 @@
 </template>
 
 <script>
+import LayoutListInline from "@/components/layout/LayoutListInline";
+
 export default {
-	name: "ListInline"
+	name: "ListInline",
+	components: {
+		LayoutListInline,
+	}
 }
 </script>
 

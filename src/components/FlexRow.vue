@@ -3,8 +3,13 @@
 </template>
 
 <script>
+import LayoutFlexRow from "@/components/layout/LayoutFlexRow";
+
 export default {
-	name: "FlexColumns"
+	name: "FlexColumns",
+	components: {
+		LayoutFlexRow,
+	},
 }
 </script>
 

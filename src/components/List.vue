@@ -3,8 +3,13 @@
 </template>
 
 <script>
+import LayoutList from "@/components/layout/LayoutList";
+
 export default {
-	name: "List"
+	name: "List",
+	components: {
+		LayoutList,
+	}
 }
 </script>
 
