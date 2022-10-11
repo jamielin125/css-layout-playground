@@ -1,0 +1,61 @@
+@import 'layoutMixin';
+.layout-columns {
+	--layout-columns-gap: 0px;
+	--layout-columns-gap-x: var(--layout-columns-gap);
+	--layout-columns-gap-y: var(--layout-columns-gap);
+
+	// flow direction row
+	&--flow-direction-row {
+		display: grid;
+		grid-template-columns: repeat(var(--layout-columns-column-count, auto-fit), minmax(var(--layout-columns-content-min-width, 0), 1fr));
+		gap: var(--layout-columns-gap-y) var(--layout-columns-gap-x);
+		justify-content: stretch;
+	}
+
+	// vertical align
+	&--flow-direction-row#{&}--vertical-align-top {
+		align-items: start;
+	}
+	&--flow-direction-row#{&}--vertical-align-center {
+		align-items: center;
+	}
+	&--flow-direction-row#{&}--vertical-align-bottom {
+		align-items: end;
+	}
+	&--flow-direction-row#{&}--vertical-align-default,
+	&--flow-direction-row#{&}--vertical-align-stretch {
+		align-items: stretch;
+	}
+
+	// flow direction column
+	&--flow-direction-column > &__wrapper {
+		columns: var(--layout-columns-content-min-width, auto) var(--layout-columns-column-count, auto);
+		column-gap: var(--layout-columns-gap-x);
+		margin-bottom: calc(-1 * var(--layout-columns-gap-y));
+	}
+	&--flow-direction-column > &__wrapper > &__item {
+		display: inline-grid;
+		width: 100%;
+		break-inside: avoid;
+		margin-bottom: var(--layout-columns-gap-y);
+	}
+
+	// gap
+	@each $layout-spacing-key, $layout-spacing-value in $layout-spacing-map {
+		$gap-size: var(--layout-spacing-#{ $layout-spacing-key });
+		&--gap-#{ $layout-spacing-key } {
+			--layout-columns-gap: #{ $gap-size };
+		}
+	}
+	@each $layout-spacing-key, $layout-spacing-value in $layout-spacing-map {
+		$gap-size: var(--layout-spacing-#{ $layout-spacing-key });
+		&--gap-x-#{ $layout-spacing-key } {
+			--layout-columns-gap-x: #{ $gap-size };
+		}
+		&--gap-y-#{ $layout-spacing-key } {
+			--layout-columns-gap-y: #{ $gap-size };
+		}
+	}
+
+	@include debug-highlight('LayoutColumns', ('--flow-direction-row > *', '--flow-direction-column > &__wrapper > &__item'));
+}

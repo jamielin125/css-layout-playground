@@ -1,0 +1,67 @@
+@mixin content-fill-height($min-height: 0) {
+	display: flex;
+	flex-direction: column;
+	> * {
+		flex: 1 1 $min-height;
+		height: auto;
+	}
+}
+
+@mixin content-fill-width($min-width: 0) {
+	display: flex;
+	flex-direction: row;
+	> * {
+		flex: 1 1 $min-width;
+		width: auto;
+	}
+}
+
+@mixin debug-highlight($name, $child-selectors: (' > *')) {
+	$debug-color: map-get($layout-debug-color-map, $name);
+	$outline-width: 2px;
+
+	.layout-u-debug & {
+		background-color: #{ transparentize($debug-color, 0.92) };
+		cursor: default;
+	}
+	.layout-u-debug &.layout--debug {
+		background:
+			repeating-linear-gradient(
+				45deg,
+				transparentize($debug-color, 0.8) 0px,
+				transparentize($debug-color, 0.8) 1px,
+				transparent 1px,
+				transparent 10px
+			),
+			rgba(255, 255, 255, 0.5);
+		outline: $outline-width solid #{ transparentize($debug-color, 0.4) };
+		outline-offset: -$outline-width;
+
+		// show component name on hover
+		&:before {
+			display: block;
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			font-weight: bold;
+			content: $name;
+			font-size: 14px;
+			line-height: 1;
+			text-align: center;
+			color: #333333;
+			border: 2px solid $debug-color;
+			background-color: #FFFFFF;
+			box-shadow: 0 0 100px 0 #{ transparentize($debug-color, 0.8) } inset;
+			padding: 12px;
+			z-index: 9999;
+		}
+	}
+	@each $child-selector in $child-selectors {
+		&.layout--debug#{ & }#{ $child-selector }:not(:empty) {
+			background-color: #{ mix($debug-color, white, 20%) };
+			outline: $outline-width dashed #{ transparentize($debug-color, 0.4) };
+			outline-offset: -$outline-width;
+		}
+	}
+}

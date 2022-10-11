@@ -1,0 +1,55 @@
+@import 'layoutMixin';
+.layout-flex-row {
+	--layout-flex-row-gap: 0px;
+
+	display: grid;
+	grid-template-rows: minmax(0, 1fr);
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	gap: var(--layout-flex-row-gap);
+
+	&--no-remain {
+		// set gap with column
+		grid-template-columns: auto minmax(var(--layout-flex-row-gap), 1fr) auto;
+		gap: 0;
+	}
+	&--no-left {
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+	&--no-right {
+		grid-template-columns: auto minmax(0, 1fr);
+	}
+	&--no-left#{&}--no-right {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	&__remain {
+		@include content-fill-width;
+	}
+
+	// vertical align
+	&--vertical-align-top {
+		align-items: start;
+	}
+	&--vertical-align-center {
+		align-items: center;
+	}
+	&--vertical-align-bottom {
+		align-items: end;
+	}
+	&--vertical-align-default > &__left,
+	&--vertical-align-default > &__right,
+	&--vertical-align-default > &__remain,
+	&--vertical-align-stretch > &__left,
+	&--vertical-align-stretch > &__right,
+	&--vertical-align-stretch > &__remain {
+		@include content-fill-height(auto);
+	}
+
+	@each $layout-spacing-key, $layout-spacing-value in $layout-spacing-map {
+		$gap-size: var(--layout-spacing-#{ $layout-spacing-key });
+		&--gap-#{ $layout-spacing-key } {
+			--layout-flex-row-gap: #{ $gap-size };
+		}
+	}
+
+	@include debug-highlight('LayoutFlexRow');
+}

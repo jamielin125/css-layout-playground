@@ -1,0 +1,50 @@
+@import 'layoutMixin';
+.layout-flex-column {
+	--layout-flex-column-gap: 0px;
+
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-rows: auto minmax(0, 1fr) auto;
+	gap: var(--layout-flex-column-gap);
+
+	&--no-remain {
+		grid-template-rows: auto minmax(var(--layout-flex-column-gap), 1fr) auto;
+		gap: 0;
+	}
+	&--no-top {
+		grid-template-rows: minmax(0, 1fr) auto;
+	}
+	&--no-bottom {
+		grid-template-rows: auto minmax(0, 1fr);
+	}
+	&--no-top#{&}--no-bottom {
+		grid-template-rows: minmax(0, 1fr);
+	}
+	&__remain {
+		@include content-fill-height;
+	}
+
+	// horizontal align
+	&--horizontal-align-left {
+		justify-items: start;
+	}
+	&--horizontal-align-center {
+		justify-items: center;
+	}
+	&--horizontal-align-right {
+		justify-items: end;
+	}
+	&--horizontal-align-default,
+	&--horizontal-align-stretch {
+		justify-items: stretch;
+	}
+
+	@each $layout-spacing-key, $layout-spacing-value in $layout-spacing-map {
+		$gap-size: var(--layout-spacing-#{ $layout-spacing-key });
+		&--gap-#{ $layout-spacing-key } {
+			--layout-flex-column-gap: #{ $gap-size };
+		}
+	}
+
+	@include debug-highlight('LayoutFlexColumn');
+}

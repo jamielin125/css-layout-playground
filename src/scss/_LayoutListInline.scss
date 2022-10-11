@@ -1,0 +1,72 @@
+@import 'layoutMixin';
+.layout-list-inline {
+	display: inline-block;
+
+	// 多一層 wrapper，避免 LayoutListInline nesting 時 variables 相互影響
+	&__wrapper {
+		--layout-list-inline-gap: 0px;
+		--layout-list-inline-gap-x: var(--layout-list-inline-gap);
+		--layout-list-inline-gap-y: var(--layout-list-inline-gap);
+		display: inline-flex;
+		vertical-align: top;
+		flex-wrap: wrap;
+		margin: calc(-0.5 * var(--layout-list-inline-gap-y)) calc(-0.5 * var(--layout-list-inline-gap-x));
+	}
+
+	&__item {
+		margin: calc(0.5 * var(--layout-list-inline-gap-y)) calc(0.5 * var(--layout-list-inline-gap-x));
+	}
+
+	&--nowrap > &__wrapper {
+		flex-wrap: nowrap;
+	}
+
+	// vertical align
+	&--vertical-align-top > &__wrapper {
+		align-items: flex-start;
+	}
+	&--vertical-align-center > &__wrapper {
+		align-items: center;
+	}
+	&--vertical-align-bottom > &__wrapper {
+		align-items: flex-end;
+	}
+	&--vertical-align-default > &__wrapper,
+	&--vertical-align-stretch > &__wrapper {
+		align-items: stretch;
+	}
+	&--vertical-align-default > &__wrapper > &__item,
+	&--vertical-align-stretch > &__wrapper > &__item {
+		@include content-fill-height(auto);
+	}
+
+	// horizontal align
+	&--horizontal-align-default > &__wrapper,
+	&--horizontal-align-left > &__wrapper {
+		justify-content: flex-start;
+	}
+	&--horizontal-align-center > &__wrapper {
+		justify-content: center;
+	}
+	&--horizontal-align-right > &__wrapper {
+		justify-content: flex-end;
+	}
+
+	@each $layout-spacing-key, $layout-spacing-value in $layout-spacing-map {
+		$gap-size: var(--layout-spacing-#{ $layout-spacing-key });
+		&--gap-#{ $layout-spacing-key } > &__wrapper {
+			--layout-list-inline-gap: #{ $gap-size };
+		}
+	}
+	@each $layout-spacing-key, $layout-spacing-value in $layout-spacing-map {
+		$gap-size: var(--layout-spacing-#{ $layout-spacing-key });
+		&--gap-x-#{ $layout-spacing-key } > &__wrapper {
+			--layout-list-inline-gap-x: #{ $gap-size };
+		}
+		&--gap-y-#{ $layout-spacing-key } > &__wrapper {
+			--layout-list-inline-gap-y: #{ $gap-size };
+		}
+	}
+
+	@include debug-highlight('LayoutListInline', (' > &__wrapper > &__item'));
+}
